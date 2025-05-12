@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-md navbar-dark shadow-sm custom-navbar">
       <a className="navbar-brand" href="/">
-        <img src="/images/logo.png" alt="CV Builder+" height="40" />
+        <img src="/images/logo.png" alt="CV Builder+" height="80" />
       </a>
 
       <button

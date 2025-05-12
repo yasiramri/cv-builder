@@ -89,7 +89,7 @@ const Footer = () => {
         {/* Copyright */}
         <hr className="my-4" />
         <p className="text-center text-muted mb-0">
-          © 2025 CV Builder+. All rights reserved.
+          © 2025 Nalar Project. All rights reserved.
         </p>
       </div>
     </footer>
