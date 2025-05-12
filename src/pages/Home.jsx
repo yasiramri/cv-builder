@@ -4,6 +4,7 @@ import TypingBanner from '../components/TypingBanner';
 import KeyFeatures from '../components/KeyFeatures';
 import CVSection from '../components/CVSection';
 import Footer from '../components/Footer';
+import CVBuilderPage from './CVBuilderPage';
 
 const HomePage = () => {
   return (
@@ -12,6 +13,7 @@ const HomePage = () => {
       <TypingBanner />
       <KeyFeatures />
       <CVSection />
+      <CVBuilderPage />
       <Footer />
     </>
   );
