@@ -10,3 +10,23 @@
 .banner-custom {
   padding: 10vh 0vh;
 }
+
+@media print {
+  .cv-preview,
+  .cv-preview * {
+    visibility: visible;
+  }
+
+  .cv-preview {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

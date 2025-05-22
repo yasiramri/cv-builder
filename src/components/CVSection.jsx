@@ -40,7 +40,7 @@ const CVSection = () => {
 
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:3001/api/analyze-cv', {
+      const response = await fetch('cv-api-production-a5e8.up.railway.app', {
         method: 'POST',
         body: formData,
       });
