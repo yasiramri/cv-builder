@@ -231,8 +231,8 @@ const CVSection = () => {
                         style={{
                           background: '#232a36',
                           color: '#fff',
-                          width: 100,
-                          height: 100,
+                          width: 300,
+                          height: 300,
                           display: 'flex',
                           flexDirection: 'column',
                           justifyContent: 'center',
