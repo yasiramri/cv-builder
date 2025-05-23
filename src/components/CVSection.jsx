@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { FaCloudUploadAlt } from 'react-icons/fa';
+import {
+  FaCloudUploadAlt,
+  FaCheckCircle,
+  FaExclamationTriangle,
+  FaLightbulb,
+} from 'react-icons/fa';
 
 function parseAnalysis(text) {
   // Ambil SCORE
@@ -260,9 +265,7 @@ const CVSection = () => {
 
                     <div className="mb-3">
                       <b>
-                        <span role="img" aria-label="Strengths">
-                          ✔️
-                        </span>{' '}
+                        <FaCheckCircle color="green" className="me-1" />
                         Kelebihan
                       </b>
                       <ul className="mt-2">
@@ -277,9 +280,10 @@ const CVSection = () => {
                     </div>
                     <div className="mb-3">
                       <b>
-                        <span role="img" aria-label="Weaknesses">
-                          ⚠️
-                        </span>{' '}
+                        <FaExclamationTriangle
+                          color="orange"
+                          className="me-1"
+                        />
                         Kekurangan
                       </b>
                       <ul className="mt-2">
@@ -294,9 +298,7 @@ const CVSection = () => {
                     </div>
                     <div>
                       <b>
-                        <span role="img" aria-label="Suggestions">
-                          💡
-                        </span>{' '}
+                        <FaLightbulb color="#FFD600" className="me-1" />
                         Saran Perbaikan
                       </b>
                       <ul className="mt-2">
