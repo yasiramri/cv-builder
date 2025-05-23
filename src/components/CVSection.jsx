@@ -41,7 +41,7 @@ const CVSection = () => {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`${API_URL}}/api/analyze-cv`, {
+      const response = await fetch(`${API_URL}/api/analyze-cv`, {
         method: 'POST',
         body: formData,
       });
