@@ -1,6 +1,61 @@
 import React, { useState } from 'react';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
+function parseAnalysis(text) {
+  let score = '';
+  let interpretation = '';
+  let strengths = [];
+  let weaknesses = [];
+  let suggestions = [];
+
+  // Ambil skor ATS
+  const scoreMatch = text.match(/Skor ATS[:\s]*(\d+)\s*\/\s*100/i);
+  if (scoreMatch) score = scoreMatch[1];
+
+  // Interpretasi (ambil setelah "Interpretasi Skor:" jika ada)
+  const interpSplit = text.split('Interpretasi Skor:');
+  if (interpSplit.length > 1) {
+    interpretation = interpSplit[1].split('\n')[0].trim();
+  } else {
+    // fallback: ambil kalimat kedua setelah skor
+    const afterScore = text.split('\n').slice(1).join('\n');
+    interpretation = afterScore.split('\n')[0].trim();
+  }
+
+  // Kelebihan
+  const strengthsMatch = text
+    .split('✅ Kelebihan:')[1]
+    ?.split('⚠️ Kekurangan:')[0];
+  if (strengthsMatch) {
+    strengths = strengthsMatch
+      .split('-')
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+  }
+
+  // Kekurangan
+  const weaknessesMatch = text
+    .split('⚠️ Kekurangan:')[1]
+    ?.split('💡 Saran Perbaikan:')[0];
+  if (weaknessesMatch) {
+    weaknesses = weaknessesMatch
+      .split('-')
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+  }
+
+  // Saran
+  const suggestionsMatch = text.split('💡 Saran Perbaikan:')[1];
+  if (suggestionsMatch) {
+    suggestions = suggestionsMatch
+      .split(/\d+\.\s+/)
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+  }
+
+  return { score, interpretation, strengths, weaknesses, suggestions };
+}
+
 const CVSection = () => {
   const [fullName, setFullName] = useState('');
   const [title, setTitle] = useState('');
@@ -41,6 +96,8 @@ const CVSection = () => {
 
     try {
       setIsLoading(true);
+      setErrorMessage('');
+      setAnalysisResult('');
       const response = await fetch(`${API_URL}/api/analyze-cv`, {
         method: 'POST',
         body: formData,
@@ -147,14 +204,117 @@ const CVSection = () => {
               {isLoading ? 'Analyzing...' : 'Analyze CV'}
             </button>
 
-            {analysisResult && (
-              <div className="mt-4 p-3 border rounded bg-light">
-                <h6>Hasil Analisis ATS:</h6>
-                <pre className="mb-0" style={{ whiteSpace: 'pre-wrap' }}>
-                  {analysisResult}
-                </pre>
-              </div>
-            )}
+            {analysisResult &&
+              (() => {
+                // Parsing hasil analisis
+                const {
+                  score,
+                  interpretation,
+                  strengths,
+                  weaknesses,
+                  suggestions,
+                } = parseAnalysis(analysisResult);
+
+                return (
+                  <div
+                    className="mt-4 p-4 border rounded bg-white"
+                    style={{ maxWidth: 700 }}
+                  >
+                    <h5 className="mb-4">
+                      <span role="img" aria-label="AI">
+                        🤖
+                      </span>{' '}
+                      Hasil Analisis ATS
+                    </h5>
+                    <div
+                      className="d-flex align-items-center mb-4"
+                      style={{ gap: 24 }}
+                    >
+                      <div
+                        className="text-center rounded"
+                        style={{
+                          background: '#232a36',
+                          color: '#fff',
+                          width: 100,
+                          height: 100,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          fontSize: 32,
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {score || '-'}
+                        <div
+                          style={{
+                            fontSize: 16,
+                            fontWeight: 'normal',
+                            marginTop: 8,
+                          }}
+                        >
+                          Skor ATS
+                        </div>
+                      </div>
+                      <div>
+                        <b>Interpretasi Skor:</b>
+                        <div>{interpretation || '-'}</div>
+                      </div>
+                    </div>
+
+                    <div className="mb-3">
+                      <b>
+                        <span role="img" aria-label="Strengths">
+                          ✔️
+                        </span>{' '}
+                        Kelebihan
+                      </b>
+                      <ul className="mt-2">
+                        {strengths.length > 0 ? (
+                          strengths.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))
+                        ) : (
+                          <li>-</li>
+                        )}
+                      </ul>
+                    </div>
+                    <div className="mb-3">
+                      <b>
+                        <span role="img" aria-label="Weaknesses">
+                          ⚠️
+                        </span>{' '}
+                        Kekurangan
+                      </b>
+                      <ul className="mt-2">
+                        {weaknesses.length > 0 ? (
+                          weaknesses.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))
+                        ) : (
+                          <li>-</li>
+                        )}
+                      </ul>
+                    </div>
+                    <div>
+                      <b>
+                        <span role="img" aria-label="Suggestions">
+                          💡
+                        </span>{' '}
+                        Saran Perbaikan
+                      </b>
+                      <ul className="mt-2">
+                        {suggestions.length > 0 ? (
+                          suggestions.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))
+                        ) : (
+                          <li>-</li>
+                        )}
+                      </ul>
+                    </div>
+                  </div>
+                );
+              })()}
           </div>
         </div>
       </div>
