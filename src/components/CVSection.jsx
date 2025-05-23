@@ -9,6 +9,7 @@ const CVSection = () => {
   const [analysisResult, setAnalysisResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -40,13 +41,10 @@ const CVSection = () => {
 
     try {
       setIsLoading(true);
-      const response = await fetch(
-        'https://cv-api-production-a5e8.up.railway.app/api/analyze-cv',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
+      const response = await fetch(`${API_URL}}/api/analyze-cv`, {
+        method: 'POST',
+        body: formData,
+      });
 
       const data = await response.json();
 
