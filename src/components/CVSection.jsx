@@ -8,49 +8,55 @@ function parseAnalysis(text) {
   let weaknesses = [];
   let suggestions = [];
 
-  // Ambil skor ATS
+  // Skor
   const scoreMatch = text.match(/Skor ATS[:\s]*(\d+)\s*\/\s*100/i);
   if (scoreMatch) score = scoreMatch[1];
 
-  // Interpretasi (ambil setelah "Interpretasi Skor:" jika ada)
-  const interpSplit = text.split('Interpretasi Skor:');
-  if (interpSplit.length > 1) {
-    interpretation = interpSplit[1].split('\n')[0].trim();
+  // Interpretasi (setelah skor, sebelum "Kelebihan" atau "✅")
+  const interpMatch = text.match(/Interpretasi Skor:\s*(.+?)(?:\n|$)/i);
+  if (interpMatch) {
+    interpretation = interpMatch[1].trim();
   } else {
-    // fallback: ambil kalimat kedua setelah skor
-    const afterScore = text.split('\n').slice(1).join('\n');
-    interpretation = afterScore.split('\n')[0].trim();
+    // Fallback: Ambil kalimat kedua setelah Skor ATS
+    const afterScore = text.split(/Skor ATS[:\s]*\d+\s*\/\s*100/i)[1];
+    if (afterScore) {
+      interpretation =
+        afterScore
+          .split('\n')
+          .map((l) => l.trim())
+          .filter((l) => l)[0] || '';
+    }
   }
 
   // Kelebihan
-  const strengthsMatch = text
-    .split('✅ Kelebihan:')[1]
-    ?.split('⚠️ Kekurangan:')[0];
-  if (strengthsMatch) {
-    strengths = strengthsMatch
-      .split('-')
+  const strengthsBlock = text
+    .split(/Kelebihan:|✅ Kelebihan:/i)[1]
+    ?.split(/Kekurangan:|⚠️ Kekurangan:/i)[0];
+  if (strengthsBlock) {
+    strengths = strengthsBlock
+      .split(/\n|[-*]\s/)
       .map((s) => s.trim())
-      .filter((s) => s.length > 0);
+      .filter((s) => s.length > 1 && !s.startsWith('Kelebihan'));
   }
 
   // Kekurangan
-  const weaknessesMatch = text
-    .split('⚠️ Kekurangan:')[1]
-    ?.split('💡 Saran Perbaikan:')[0];
-  if (weaknessesMatch) {
-    weaknesses = weaknessesMatch
-      .split('-')
+  const weaknessesBlock = text
+    .split(/Kekurangan:|⚠️ Kekurangan:/i)[1]
+    ?.split(/Saran Perbaikan:|💡 Saran Perbaikan:/i)[0];
+  if (weaknessesBlock) {
+    weaknesses = weaknessesBlock
+      .split(/\n|[-*]\s/)
       .map((s) => s.trim())
-      .filter((s) => s.length > 0);
+      .filter((s) => s.length > 1 && !s.startsWith('Kekurangan'));
   }
 
-  // Saran
-  const suggestionsMatch = text.split('💡 Saran Perbaikan:')[1];
-  if (suggestionsMatch) {
-    suggestions = suggestionsMatch
-      .split(/\d+\.\s+/)
+  // Saran (bisa bullet, nomor, atau *)
+  let suggestionsBlock = text.split(/Saran Perbaikan:|💡 Saran Perbaikan:/i)[1];
+  if (suggestionsBlock) {
+    suggestions = suggestionsBlock
+      .split(/\n|\d+\.\s|[-*]\s/)
       .map((s) => s.trim())
-      .filter((s) => s.length > 0);
+      .filter((s) => s.length > 1);
   }
 
   return { score, interpretation, strengths, weaknesses, suggestions };
@@ -305,7 +311,19 @@ const CVSection = () => {
                       <ul className="mt-2">
                         {suggestions.length > 0 ? (
                           suggestions.map((item, idx) => (
-                            <li key={idx}>{item}</li>
+                            <li key={idx}>
+                              {/* Render bold jika ada tanda ** */}
+                              {item
+                                .split(/(\*\*.+?\*\*)/g)
+                                .map((part, i) =>
+                                  part.startsWith('**') &&
+                                  part.endsWith('**') ? (
+                                    <b key={i}>{part.replace(/\*\*/g, '')}</b>
+                                  ) : (
+                                    part
+                                  )
+                                )}
+                            </li>
                           ))
                         ) : (
                           <li>-</li>
