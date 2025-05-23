@@ -4,6 +4,7 @@ import {
   FaCheckCircle,
   FaExclamationTriangle,
   FaLightbulb,
+  FaRobot,
 } from 'react-icons/fa';
 
 function parseAnalysis(text) {
@@ -222,9 +223,10 @@ const CVSection = () => {
                     style={{ maxWidth: 700 }}
                   >
                     <h5 className="mb-4">
-                      <span role="img" aria-label="AI">
-                        🤖
-                      </span>{' '}
+                      <FaRobot
+                        size={28}
+                        style={{ marginRight: 8, color: '#576cbc' }}
+                      />
                       Hasil Analisis ATS
                     </h5>
                     <div
