@@ -66,7 +66,7 @@ const CVSection = () => {
   const [analysisResult, setAnalysisResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  // const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
