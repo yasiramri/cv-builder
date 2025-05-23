@@ -66,7 +66,7 @@ const CVSection = () => {
   const [analysisResult, setAnalysisResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const API_URL = process.env.REACT_APP_API_URL;
+  // const API_URL = process.env.REACT_APP_API_URL;
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -122,49 +122,9 @@ const CVSection = () => {
 
   return (
     <div className="container py-5">
-      <div className="row g-5">
-        {/* CV Builder (opsional / dummy) */}
-        <div className="col-12 col-md-6">
-          <div className="p-4 rounded shadow-sm h-100">
-            <h4 className="mb-4">CV Builder</h4>
-            <div className="mb-3">
-              <label className="form-label">Full Name</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Muhammad Yasir Amri"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Professional Title</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Software Engineer"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Experience</label>
-              <textarea
-                className="form-control"
-                rows="4"
-                placeholder="Your work experience..."
-                value={experience}
-                onChange={(e) => setExperience(e.target.value)}
-              />
-            </div>
-            <button className="btn btn-dark w-100" disabled>
-              Generate CV (Coming Soon)
-            </button>
-          </div>
-        </div>
-
+      <div className="row">
         {/* CV Analyzer */}
-        <div className="col-12 col-md-6">
+        <div className="">
           <div className="p-4 rounded shadow-sm h-100">
             <h4 className="mb-4">CV Analyzer (PDF Only)</h4>
             <div
@@ -218,10 +178,7 @@ const CVSection = () => {
                 } = parseAnalysis(analysisResult);
 
                 return (
-                  <div
-                    className="mt-4 p-4 border rounded bg-white"
-                    style={{ maxWidth: 700 }}
-                  >
+                  <div className="mt-4 p-4 border rounded bg-white">
                     <h5 className="mb-4">
                       <FaRobot
                         size={28}
