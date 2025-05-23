@@ -2,65 +2,55 @@ import React, { useState } from 'react';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
 function parseAnalysis(text) {
-  let score = '';
-  let interpretation = '';
+  // Ambil SCORE
+  const scoreMatch = text.match(/SCORE:\s*(\d+)/i);
+  const score = scoreMatch ? scoreMatch[1] : '';
+
+  // Ambil INTERPRETATION
+  const interpretationMatch = text.match(
+    /INTERPRETATION:\s*(.+?)\n(STRENGTHS:|\nWEAKNESSES:|\nSUGGESTIONS:|$)/is
+  );
+  const interpretation = interpretationMatch
+    ? interpretationMatch[1].trim()
+    : '';
+
+  // Ambil STRENGTHS (antara STRENGTHS: dan WEAKNESSES:)
+  const strengthsMatch = text.match(
+    /STRENGTHS:\s*((?:.|\n)*?)(?:WEAKNESSES:|SUGGESTIONS:|$)/i
+  );
   let strengths = [];
+  if (strengthsMatch) {
+    strengths = strengthsMatch[1]
+      .split('\n')
+      .map((l) => l.replace(/^[-*]\s*/, '').trim())
+      .filter((l) => l.length > 0);
+  }
+
+  // Ambil WEAKNESSES (antara WEAKNESSES: dan SUGGESTIONS:)
+  const weaknessesMatch = text.match(
+    /WEAKNESSES:\s*((?:.|\n)*?)(?:SUGGESTIONS:|$)/i
+  );
   let weaknesses = [];
+  if (weaknessesMatch) {
+    weaknesses = weaknessesMatch[1]
+      .split('\n')
+      .map((l) => l.replace(/^[-*]\s*/, '').trim())
+      .filter((l) => l.length > 0);
+  }
+
+  // Ambil SUGGESTIONS (dari SUGGESTIONS: sampai akhir)
+  const suggestionsMatch = text.match(/SUGGESTIONS:\s*((?:.|\n)*)$/i);
   let suggestions = [];
-
-  // Skor
-  const scoreMatch = text.match(/Skor ATS[:\s]*(\d+)\s*\/\s*100/i);
-  if (scoreMatch) score = scoreMatch[1];
-
-  // Interpretasi (setelah skor, sebelum "Kelebihan" atau "✅")
-  const interpMatch = text.match(/Interpretasi Skor:\s*(.+?)(?:\n|$)/i);
-  if (interpMatch) {
-    interpretation = interpMatch[1].trim();
-  } else {
-    // Fallback: Ambil kalimat kedua setelah Skor ATS
-    const afterScore = text.split(/Skor ATS[:\s]*\d+\s*\/\s*100/i)[1];
-    if (afterScore) {
-      interpretation =
-        afterScore
-          .split('\n')
-          .map((l) => l.trim())
-          .filter((l) => l)[0] || '';
-    }
-  }
-
-  // Kelebihan
-  const strengthsBlock = text
-    .split(/Kelebihan:|✅ Kelebihan:/i)[1]
-    ?.split(/Kekurangan:|⚠️ Kekurangan:/i)[0];
-  if (strengthsBlock) {
-    strengths = strengthsBlock
-      .split(/\n|[-*]\s/)
-      .map((s) => s.trim())
-      .filter((s) => s.length > 1 && !s.startsWith('Kelebihan'));
-  }
-
-  // Kekurangan
-  const weaknessesBlock = text
-    .split(/Kekurangan:|⚠️ Kekurangan:/i)[1]
-    ?.split(/Saran Perbaikan:|💡 Saran Perbaikan:/i)[0];
-  if (weaknessesBlock) {
-    weaknesses = weaknessesBlock
-      .split(/\n|[-*]\s/)
-      .map((s) => s.trim())
-      .filter((s) => s.length > 1 && !s.startsWith('Kekurangan'));
-  }
-
-  // Saran (bisa bullet, nomor, atau *)
-  let suggestionsBlock = text.split(/Saran Perbaikan:|💡 Saran Perbaikan:/i)[1];
-  if (suggestionsBlock) {
-    suggestions = suggestionsBlock
-      .split(/\n|\d+\.\s|[-*]\s/)
-      .map((s) => s.trim())
-      .filter((s) => s.length > 1);
+  if (suggestionsMatch) {
+    suggestions = suggestionsMatch[1]
+      .split(/\n\d+\.\s+/)
+      .map((l) => l.replace(/^\d+\.\s*/, '').trim())
+      .filter((l) => l.length > 0);
   }
 
   return { score, interpretation, strengths, weaknesses, suggestions };
 }
+console.log(parseAnalysis);
 
 const CVSection = () => {
   const [fullName, setFullName] = useState('');
