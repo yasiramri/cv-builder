@@ -232,12 +232,13 @@ const CVSection = () => {
                           background: '#232a36',
                           color: '#fff',
                           width: 300,
-                          height: 300,
+                          height: 100,
                           display: 'flex',
                           flexDirection: 'column',
                           justifyContent: 'center',
                           fontSize: 32,
                           fontWeight: 'bold',
+                          flexShrink: 0,
                         }}
                       >
                         {score || '-'}
