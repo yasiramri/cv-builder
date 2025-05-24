@@ -8,7 +8,6 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/cv-builder" element={<CVBuilderPage />} />
         <Route path="/cv-list" element={<CVtotal />} />
       </Routes>
     </div>
