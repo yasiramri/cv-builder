@@ -11,7 +11,7 @@ function NotFoundPage() {
       <img
         src="https://http.cat/404"
         alt="404 Not Found"
-        style={{ maxWidth: 400, width: '100%' }}
+        style={{ maxWidth: 600, width: '100%' }}
       />
       <p>Oops, halaman yang kamu cari tidak ditemukan.</p>
     </div>
@@ -24,7 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cv-list" element={<CVtotal />} />
-        {/* Route 404 Not Found harus di paling bawah */}
+        {/* <Route path="/cv-builder-pro" element={<CVBuilderPage />} /> */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
