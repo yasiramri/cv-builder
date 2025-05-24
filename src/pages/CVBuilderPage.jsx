@@ -23,9 +23,6 @@ const CVBuilderPage = () => {
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h3>CV Builder</h3>
-        <button className="btn btn-primary" onClick={handlePrint}>
-          Download PDF
-        </button>
       </div>
 
       <div className="row g-4">

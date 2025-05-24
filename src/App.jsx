@@ -24,7 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cv-list" element={<CVtotal />} />
-        {/* <Route path="/cv-builder-pro" element={<CVBuilderPage />} /> */}
+        <Route path="/cv-builder" element={<CVBuilderPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>

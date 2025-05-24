@@ -184,7 +184,7 @@ const CVSection = () => {
                         size={28}
                         style={{ marginRight: 8, color: '#576cbc' }}
                       />
-                      Hasil Analisis ATS
+                      Hasil Analisis
                     </h5>
                     <div
                       className="d-flex align-items-center mb-4"
@@ -213,7 +213,7 @@ const CVSection = () => {
                             marginTop: 8,
                           }}
                         >
-                          Skor ATS
+                          Skor
                         </div>
                       </div>
                       <div>

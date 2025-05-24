@@ -189,49 +189,50 @@ const CVPreview = ({
               <hr className="my-4" />
             ) : null}
             <h5 className="mb-3">Experience</h5>
-            {experiences.map((exp, i) =>
-              // Check if title or company exists before rendering experience block
-              exp.title || exp.company ? (
-                <div key={i} className="mb-3">
-                  <div className="d-flex justify-content-between align-items-start">
-                    {' '}
-                    {/* align-items-start for date positioning */}
-                    <div>
-                      {exp.title && (
-                        <div className="fw-semibold">{exp.title}</div>
-                      )}
-                      {exp.company && (
-                        <div className="text-muted small">{exp.company}</div>
-                      )}
-                    </div>
-                    <div className="text-secondary small text-nowrap ms-3">
+            {experiences.map(
+              (exp, i) =>
+                // Check if title or company exists before rendering experience block
+                exp.title || exp.company ? (
+                  <div key={i} className="mb-3">
+                    <div className="d-flex justify-content-between align-items-start">
                       {' '}
-                      {/* Added ms-3 for separation */}
-                      {/* Date formatting logic */}
-                      {exp.startMonth && exp.startYear
-                        ? `${exp.startMonth} ${exp.startYear}`
-                        : ''}
-                      {exp.startMonth &&
-                      exp.startYear &&
-                      (exp.present || (exp.endMonth && exp.endYear))
-                        ? ' - '
-                        : ''}{' '}
-                      {/* Add dash only if start date and end indicator exist */}
-                      {exp.present
-                        ? 'Present'
-                        : exp.endMonth && exp.endYear
-                        ? `${exp.endMonth} ${exp.endYear}`
-                        : ''}
+                      {/* align-items-start for date positioning */}
+                      <div>
+                        {exp.title && (
+                          <div className="fw-semibold">{exp.title}</div>
+                        )}
+                        {exp.company && (
+                          <div className="text-muted small">{exp.company}</div>
+                        )}
+                      </div>
+                      <div className="text-secondary small text-nowrap ms-3">
+                        {' '}
+                        {/* Added ms-3 for separation */}
+                        {/* Date formatting logic */}
+                        {exp.startMonth && exp.startYear
+                          ? `${exp.startMonth} ${exp.startYear}`
+                          : ''}
+                        {exp.startMonth &&
+                        exp.startYear &&
+                        (exp.present || (exp.endMonth && exp.endYear))
+                          ? ' - '
+                          : ''}{' '}
+                        {/* Add dash only if start date and end indicator exist */}
+                        {exp.present
+                          ? 'Present'
+                          : exp.endMonth && exp.endYear
+                          ? `${exp.endMonth} ${exp.endYear}`
+                          : ''}
+                      </div>
                     </div>
+                    {/* Use the helper function for accomplishments */}
+                    {exp.accomplishments && exp.accomplishments.trim() && (
+                      <ul className="small mb-0 mt-1">
+                        {renderListItems(exp.accomplishments)}
+                      </ul>
+                    )}
                   </div>
-                  {/* Use the helper function for accomplishments */}
-                  {exp.accomplishments && exp.accomplishments.trim() && (
-                    <ul className="small mb-0 mt-1">
-                      {renderListItems(exp.accomplishments)}
-                    </ul>
-                  )}
-                </div>
-              ) : null // Don't render if no title or company
+                ) : null // Don't render if no title or company
             )}
           </>
         )}
@@ -241,51 +242,52 @@ const CVPreview = ({
             {/* Add hr before section */}
             <hr className="my-4" />
             <h5 className="mt-4 mb-3">Education</h5>
-            {educations.map((edu, i) =>
-              // Check if degree or institution exists before rendering education block
-              edu.degree || edu.institution ? (
-                <div key={i} className="mb-3">
-                  <div className="d-flex justify-content-between align-items-start">
-                    {' '}
-                    {/* align-items-start for date positioning */}
-                    <div>
-                      {edu.degree && (
-                        <div className="fw-semibold">{edu.degree}</div>
-                      )}
-                      {edu.institution && (
-                        <div className="text-muted small">
-                          {edu.institution}
-                        </div>
-                      )}
-                    </div>
-                    <div className="text-secondary small text-nowrap ms-3">
+            {educations.map(
+              (edu, i) =>
+                // Check if degree or institution exists before rendering education block
+                edu.degree || edu.institution ? (
+                  <div key={i} className="mb-3">
+                    <div className="d-flex justify-content-between align-items-start">
                       {' '}
-                      {/* Added ms-3 for separation */}
-                      {/* Date formatting logic */}
-                      {edu.startMonth && edu.startYear
-                        ? `${edu.startMonth} ${edu.startYear}`
-                        : ''}
-                      {edu.startMonth &&
-                      edu.startYear &&
-                      (edu.present || (edu.endMonth && edu.endYear))
-                        ? ' - '
-                        : ''}{' '}
-                      {/* Add dash only if start date and end indicator exist */}
-                      {edu.present
-                        ? 'Present'
-                        : edu.endMonth && edu.endYear
-                        ? `${edu.endMonth} ${edu.endYear}`
-                        : ''}
+                      {/* align-items-start for date positioning */}
+                      <div>
+                        {edu.degree && (
+                          <div className="fw-semibold">{edu.degree}</div>
+                        )}
+                        {edu.institution && (
+                          <div className="text-muted small">
+                            {edu.institution}
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-secondary small text-nowrap ms-3">
+                        {' '}
+                        {/* Added ms-3 for separation */}
+                        {/* Date formatting logic */}
+                        {edu.startMonth && edu.startYear
+                          ? `${edu.startMonth} ${edu.startYear}`
+                          : ''}
+                        {edu.startMonth &&
+                        edu.startYear &&
+                        (edu.present || (edu.endMonth && edu.endYear))
+                          ? ' - '
+                          : ''}{' '}
+                        {/* Add dash only if start date and end indicator exist */}
+                        {edu.present
+                          ? 'Present'
+                          : edu.endMonth && edu.endYear
+                          ? `${edu.endMonth} ${edu.endYear}`
+                          : ''}
+                      </div>
                     </div>
-                  </div>
 
-                  {edu.achievements && edu.achievements.trim() && (
-                    <ul className="small mb-0 mt-1">
-                      {renderListItems(edu.achievements)}
-                    </ul>
-                  )}
-                </div>
-              ) : null // Don't render if no degree or institution
+                    {edu.achievements && edu.achievements.trim() && (
+                      <ul className="small mb-0 mt-1">
+                        {renderListItems(edu.achievements)}
+                      </ul>
+                    )}
+                  </div>
+                ) : null // Don't render if no degree or institution
             )}
           </>
         )}
